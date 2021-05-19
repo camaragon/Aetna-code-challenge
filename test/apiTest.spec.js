@@ -123,4 +123,8 @@ describe('OMDb API test with an API key', () => {
             }
         })
     })
+
+    it('Should verify there are no duplicate records across the first 5 pages', () => {
+        
+    })
 })
