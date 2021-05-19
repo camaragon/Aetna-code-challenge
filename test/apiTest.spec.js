@@ -1,4 +1,5 @@
 const should = require('should');
+const moment = require('moment');
 const request = require('request');
 const chai = require('chai');
 const expect = chai.expect;
@@ -33,7 +34,7 @@ describe('Initial OMDb API test with no api key', () => {
 
 describe('OMDb API test with an API key', () => {
     it('Should return a response 200 status code', (done) => {
-        request.get({url: baseUrl + '?t=thomas' + apiKey}, (err, res, body) => {
+        request.get({url: baseUrl + '?s=thomas' + apiKey}, (err, res, body) => {
             let parsedBody = {};
             try {
                 parsedBody = JSON.parse(body)
@@ -43,31 +44,42 @@ describe('OMDb API test with an API key', () => {
             }
 
             expect(res.statusCode).to.equal(200);
-            console.log(parsedBody)
+            // console.log(parsedBody)
             done();
         })
     })
 
-    it('Should return a response 200 status code', (done) => {
-        request.get({url: baseUrl + '?t=thomas' + apiKey}, (err, res, body) => {
-            let parsedBody = {};
+    it('Should return a response for search of "thomas"', (done) => {
+        request.get({url: baseUrl + '?s=thomas' + apiKey}, (err, res, body) => {
+            let parsedBody = [];
             try {
                 parsedBody = JSON.parse(body)
             }
             catch(err) {
-                parsedBody = {};
+                parsedBody = [];
             }
-            // console.log(parsedBody);
- 
-            expect(parsedBody.should.have.property('Title'))
-            expect(parsedBody.should.have.property('Year'))
-            expect(parsedBody.should.have.property('imdbID'))
-            expect(parsedBody.should.have.property('Type'))
-            expect(parsedBody.should.have.property('Poster'))
-            if (parsedBody.should.have.property('Title')) {
-                expect(parsedBody.Title).to.equal('Thomas');
-            }
+            // console.log(parsedBody.Search);
+            parsedBody.Search.forEach(object => {
+                expect(object).to.be.a('object')
+                expect(object.Title).to.include('Thomas');
+                expect(object.should.have.property('Title'));
+                expect(object.should.have.property('Year'));
+                expect(object.should.have.property('imdbID'));
+                expect(object.should.have.property('Type'));
+                expect(object.should.have.property('Poster'));
+                if (object.Year.length === 9) {
+                    // console.log(object.Year)
+                    // const years = object.Year.split('-');
+                    // console.log('HELLOOOOOO', years)
+                    expect(object.Year.substring(0, 4).length).to.equal(4);
+                    expect(object.Year.substring(5, 9).length).to.equal(4);
+                } else {
+                    expect(object.Year.length).to.equal(4);
+                }
+            })
             done();
         })
     })
+
+    
 })
