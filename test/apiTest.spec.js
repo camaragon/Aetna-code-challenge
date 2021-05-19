@@ -1,5 +1,5 @@
 const should = require('should');
-const moment = require('moment');
+// const moment = require('moment');
 const request = require('request');
 const chai = require('chai');
 const expect = chai.expect;
@@ -73,6 +73,7 @@ describe('OMDb API test with an API key', () => {
                     // console.log('HELLOOOOOO', years)
                     expect(object.Year.substring(0, 4).length).to.equal(4);
                     expect(object.Year.substring(5, 9).length).to.equal(4);
+                    // Tried to use moment.js it was depreciated
                 } else {
                     expect(object.Year.length).to.equal(4);
                 }
@@ -81,5 +82,22 @@ describe('OMDb API test with an API key', () => {
         })
     })
 
-    
+    it.only('Should verify each title on page 1 is accessible via imdbID', () => {
+        request.get({url: baseUrl + '?i=tt6292090&page=1' + apiKey}, (err, res, body) => {
+            let parsedBody = {};
+            try {
+                parsedBody = JSON.parse(body)
+            }
+            catch(err) {
+                parsedBody = {};
+            }
+            console.log(parsedBody)
+
+            expect(object.should.have.property('Title'));
+        })
+    })
+
+    it('Should verify none of the poster links on page 1 are broken', () => {
+        
+    })
 })
