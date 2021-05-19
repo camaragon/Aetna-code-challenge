@@ -57,9 +57,13 @@ describe('OMDb API test with an API key', () => {
             catch(err) {
                 parsedBody = {};
             }
-
-            
-            console.log(parsedBody);
+            // console.log(parsedBody);
+ 
+            expect(parsedBody.should.have.property('Title'))
+            expect(parsedBody.should.have.property('Year'))
+            expect(parsedBody.should.have.property('imdbID'))
+            expect(parsedBody.should.have.property('Type'))
+            expect(parsedBody.should.have.property('Poster'))
             if (parsedBody.should.have.property('Title')) {
                 expect(parsedBody.Title).to.equal('Thomas');
             }
