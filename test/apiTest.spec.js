@@ -31,22 +31,39 @@ describe('Initial OMDb API test with no api key', () => {
     })
 })
 
-// describe('OMDb API test with an API key', () => {
-//     it('Should return a response 200 status code', (done) => {
-//         request.get({url: baseUrl + '?t=thomas' + apiKey}, (err, res, body) => {
-//             let parsedBody = {};
-//             try {
-//                 parsedBody = JSON.parse(body)
-//             }
-//             catch(err) {
-//                 parsedBody = {};
-//             }
+describe('OMDb API test with an API key', () => {
+    it('Should return a response 200 status code', (done) => {
+        request.get({url: baseUrl + '?t=thomas' + apiKey}, (err, res, body) => {
+            let parsedBody = {};
+            try {
+                parsedBody = JSON.parse(body)
+            }
+            catch(err) {
+                parsedBody = {};
+            }
 
-//             expect(res.statusCode).to.equal(200);
-//             console.log(parsedBody)
-//             done();
-//         })
-//     })
+            expect(res.statusCode).to.equal(200);
+            console.log(parsedBody)
+            done();
+        })
+    })
 
-//     it('Should return a response body')
-// })
+    it('Should return a response 200 status code', (done) => {
+        request.get({url: baseUrl + '?t=thomas' + apiKey}, (err, res, body) => {
+            let parsedBody = {};
+            try {
+                parsedBody = JSON.parse(body)
+            }
+            catch(err) {
+                parsedBody = {};
+            }
+
+            
+            console.log(parsedBody);
+            if (parsedBody.should.have.property('Title')) {
+                expect(parsedBody.Title).to.equal('Thomas');
+            }
+            done();
+        })
+    })
+})
