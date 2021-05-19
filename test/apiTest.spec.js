@@ -82,7 +82,37 @@ describe('OMDb API test with an API key', () => {
         })
     })
 
-    it.only('Should verify each title on page 1 is accessible via imdbID', () => {
+    it.only('Should verify each title on page 1 is accessible via imdbID', (done) => {
+        request.get({url: baseUrl + '?s=thomas&page=1' + apiKey}, (err, res, body) => {
+            let parsedBody = {};
+            try {
+                parsedBody = JSON.parse(body)
+            }
+            catch(err) {
+                parsedBody = {};
+            }
+            // console.log(parsedBody)
+            parsedBody.Search.forEach(movie => {
+                request.get({url: baseUrl + '?i=' + movie.imdbID + apiKey}, (res, body) => {
+                    // console.log('hi', body.body)
+                    let result = {};
+                    try {
+                        result = JSON.parse(body.body)
+                    }
+                    catch(err) {
+                        result = {};
+                    }
+                    // console.log(result)
+                    expect(result.should.have.property('Title'));
+                })
+            })
+            
+            done();
+            // expect(object.should.have.property('Title'));
+        })
+    })
+
+    it('Should verify none of the poster links on page 1 are broken', () => {
         request.get({url: baseUrl + '?i=tt6292090&page=1' + apiKey}, (err, res, body) => {
             let parsedBody = {};
             try {
@@ -91,13 +121,6 @@ describe('OMDb API test with an API key', () => {
             catch(err) {
                 parsedBody = {};
             }
-            console.log(parsedBody)
-
-            expect(object.should.have.property('Title'));
         })
-    })
-
-    it('Should verify none of the poster links on page 1 are broken', () => {
-        
     })
 })
