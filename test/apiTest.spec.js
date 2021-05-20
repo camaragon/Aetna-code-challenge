@@ -1,7 +1,9 @@
 const should = require('should');
 // const moment = require('moment');
 const request = require('request');
-const chai = require('chai');
+const chai = require('chai')
+    , chaiHttp = require('chai-http');
+chai.use(chaiHttp);
 const expect = chai.expect;
 const baseUrl = 'http://www.omdbapi.com/';
 const apiKey = '&apikey=83a364a1'
@@ -82,7 +84,7 @@ describe('OMDb API test with an API key', () => {
         })
     })
 
-    it.only('Should verify each title on page 1 is accessible via imdbID', (done) => {
+    it('Should verify each title on page 1 is accessible via imdbID', (done) => {
         request.get({url: baseUrl + '?s=thomas&page=1' + apiKey}, (err, res, body) => {
             let parsedBody = {};
             try {
@@ -112,8 +114,8 @@ describe('OMDb API test with an API key', () => {
         })
     })
 
-    it('Should verify none of the poster links on page 1 are broken', () => {
-        request.get({url: baseUrl + '?i=tt6292090&page=1' + apiKey}, (err, res, body) => {
+    it.only('Should verify none of the poster links on page 1 are broken', (done) => {
+        request.get({url: baseUrl + '?s=thomas&page=1' + apiKey}, (err, res, body) => {
             let parsedBody = {};
             try {
                 parsedBody = JSON.parse(body)
@@ -121,10 +123,23 @@ describe('OMDb API test with an API key', () => {
             catch(err) {
                 parsedBody = {};
             }
+
+            parsedBody.Search.forEach(movie => {
+                // console.log(movie.Poster)
+                const url = movie.Poster.split('images');
+                console.log(url)
+                chai.request(url[0])
+                    .get('images' + url[1])
+                    .end( (err, res) => {
+                        console.log('res', res.statusCode)
+                        expect(res.statusCode).to.equal(200);
+                    })
+                })
         })
+        done();
     })
 
     it('Should verify there are no duplicate records across the first 5 pages', () => {
-        
+
     })
 })
