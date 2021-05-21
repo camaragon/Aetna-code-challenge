@@ -37,16 +37,9 @@ describe('Initial OMDb API test with no api key', () => {
 describe('OMDb API test with an API key', () => {
     it('Should return a response 200 status code', (done) => {
         request.get({url: baseUrl + '?s=thomas' + apiKey}, (err, res, body) => {
-            let parsedBody = {};
-            try {
-                parsedBody = JSON.parse(body)
-            }
-            catch(err) {
-                parsedBody = {};
-            }
 
             expect(res.statusCode).to.equal(200);
-            // console.log(parsedBody)
+          
             done();
         })
     })
@@ -61,23 +54,23 @@ describe('OMDb API test with an API key', () => {
                 parsedBody = [];
             }
             // console.log(parsedBody.Search);
-            parsedBody.Search.forEach(object => {
-                expect(object).to.be.a('object')
-                expect(object.Title).to.include('Thomas');
-                expect(object.should.have.property('Title'));
-                expect(object.should.have.property('Year'));
-                expect(object.should.have.property('imdbID'));
-                expect(object.should.have.property('Type'));
-                expect(object.should.have.property('Poster'));
-                if (object.Year.length === 9) {
+            parsedBody.Search.forEach(movie => {
+                expect(movie).to.be.a('object')
+                expect(movie.Title).to.include('Thomas');
+                expect(movie.should.have.property('Title'));
+                expect(movie.should.have.property('Year'));
+                expect(movie.should.have.property('imdbID'));
+                expect(movie.should.have.property('Type'));
+                expect(movie.should.have.property('Poster'));
+                if (movie.Year.length === 9) {
                     // console.log(object.Year)
                     // const years = object.Year.split('-');
                     // console.log('HELLOOOOOO', years)
-                    expect(object.Year.substring(0, 4).length).to.equal(4);
-                    expect(object.Year.substring(5, 9).length).to.equal(4);
+                    expect(movie.Year.substring(0, 4).length).to.equal(4);
+                    expect(movie.Year.substring(5, 9).length).to.equal(4);
                     // Tried to use moment.js it was depreciated
                 } else {
-                    expect(object.Year.length).to.equal(4);
+                    expect(movie.Year.length).to.equal(4);
                 }
             })
             done();
@@ -134,12 +127,12 @@ describe('OMDb API test with an API key', () => {
                         console.log('res', res.statusCode)
                         expect(res.statusCode).to.equal(200);
                     })
-                })
+            })
+            done();
         })
-        done();
     })
 
-    it.only('Should verify there are no duplicate records across the first 5 pages', (done) => {
+    it('Should verify there are no duplicate records across the first 5 pages', (done) => {
         let allMovies = [];
         for (let i = 1; i < 6; i++) {
             request.get({url: baseUrl + '?s=thomas&page=' + i + apiKey}, (err, res, body) => {
@@ -158,14 +151,17 @@ describe('OMDb API test with an API key', () => {
                    expect(count).to.equal(1);
                 //    console.log(count)
                })
+               done();
             })
         }
-        done()
     })
 
-    it('Should verify that all of movies searched have runtime in minutes', () => {
-        request.get({url: baseUrl + '?s=thomas' + apiKey}, (err, res, body) => {
-            
+    it('Should verify that a movie found by title has runtime in minutes', (done) => {
+        request.get({url: baseUrl + '?t=sky' + apiKey}, (err, res, body) => {
+            let parsedBody = JSON.parse(body);
+            expect(parsedBody.should.have.property('Runtime'));
+            expect(parsedBody.Runtime).to.include('min');
+            done();
         })
     })
     
