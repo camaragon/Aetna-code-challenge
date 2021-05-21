@@ -10,7 +10,7 @@ All in all, this was a very insightful code challenge and I'm definitely proud o
 
 ### Technologies Used
 
-* Javascript
+* JavaScript
 * Node.js
 * Chai (Expect/Should)
 * Mocha
