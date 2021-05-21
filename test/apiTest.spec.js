@@ -141,45 +141,32 @@ describe('OMDb API test with an API key', () => {
 
     it.only('Should verify there are no duplicate records across the first 5 pages', (done) => {
         let allMovies = [];
-        request.get({url: baseUrl + '?s=thomas&page=1' + apiKey}, (err, res, body) => {
-            let parsedBody = JSON.parse(body);
-            allMovies.push(parsedBody.Search)
-            // console.log(allMovies)
-        })
-        request.get({url: baseUrl + '?s=thomas&page=2' + apiKey}, (err, res, body) => {
-            let parsedBody = JSON.parse(body);
-            allMovies.push(parsedBody.Search)
-            console.log(allMovies)
-        })
-
-        if (allMovies.length > 0) {
-            // console.log(allMovies)
-        }
-        // for (let i = 1; i < 6; i++) {
-        //     request.get({url: baseUrl + '?s=thomas&page=' + i + apiKey}, (err, res, body) => {
-        //         let parsedBody = {};
-        //         try {
-        //             parsedBody = JSON.parse(body)
-        //         }
-        //         catch(err) {
-        //             parsedBody = {};
-        //         }
-        //         // console.log(`${i}`, parsedBody.Search)
+        for (let i = 1; i < 6; i++) {
+            request.get({url: baseUrl + '?s=thomas&page=' + i + apiKey}, (err, res, body) => {
+                let parsedBody = {};
+                try {
+                    parsedBody = JSON.parse(body)
+                }
+                catch(err) {
+                    parsedBody = {};
+                }
                 
-        //         allMovies.push(parsedBody.Search)
+                allMovies.push(parsedBody.Search);
 
-        //         // input: objects from first 5 pages
-        //         // output: if one of the 
-               
-        //     })
-        // }
-        // console.log(allMovies.length)
-        // expect(allMovies.length)
+                parsedBody.Search.forEach(movie => {
+                   const count = allMovies.flat().filter(a => a === movie).length;
+                   expect(count).to.equal(1);
+                //    console.log(count)
+               })
+            })
+        }
         done()
     })
 
-    it('Should ', () => {
-
+    it('Should verify that all of movies searched have runtime in minutes', () => {
+        request.get({url: baseUrl + '?s=thomas' + apiKey}, (err, res, body) => {
+            
+        })
     })
     
 })
