@@ -1,5 +1,40 @@
 # QA API Code Test
 
+## About The Code
+
+This is a code challenge from Aetna/CVS Health to test the OMDb API. This was an opportunity to display my skills in testing API endpoints and the corresponding data. I really enjoyed building and executing these tests, as it was a bit of a refresher for me, yet I still learned a lot. Prior to building each test I pseudocoded out exactly what it is I wanted to assert within the data. I struggled a bit on the test to verify the year matches the correct format. I tried using Moment.js, but quickly realized it was deprecated. I instead decided to compare the number of strings to verify format. I was also stumped on how to verify the poster image links were not broken. I learned about the chai-http Chai library plug-in which allowed me to follow the link and receive a resulting status code.
+
+All in all, this was a very insightful code challenge and I'm definitely proud of the work I accomplished.
+
+![Tests Screenshot](https://user-images.githubusercontent.com/69489633/119179357-0c24d580-ba2c-11eb-817f-d71c70cac64e.png)
+
+### Technologies Used
+
+* Javascript
+* Node.js
+* Chai
+* Mocha
+
+## Getting Started
+
+To get a local copy and execute the tests follow the steps below.
+
+1. Clone the repo down to your local machine
+```sh
+git clone https://github.com/camaragon/Aetna-code-challenge.git
+```
+
+2. Install NPM packages in the repo's directory
+```sh
+npm install
+```
+3. Start the tests
+
+Aetna-code-challenge
+```sh
+npm run test
+```
+
 It is time to run some tests against OMDb API - The Open Movie Database!
 
 ## Tips:
