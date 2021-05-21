@@ -1,0 +1,17 @@
+{
+  "name": "test_omdb_api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "author": "Cameron Aragon",
+  "license": "ISC",
+  "devDependencies": {
+    "chai": "^4.3.4",
+    "chai-http": "^4.3.0",
+    "request": "^2.88.2",
+    "should": "^13.2.3"
+  }
+}
