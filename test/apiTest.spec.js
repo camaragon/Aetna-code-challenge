@@ -114,7 +114,7 @@ describe('OMDb API test with an API key', () => {
         })
     })
 
-    it.only('Should verify none of the poster links on page 1 are broken', (done) => {
+    it('Should verify none of the poster links on page 1 are broken', (done) => {
         request.get({url: baseUrl + '?s=thomas&page=1' + apiKey}, (err, res, body) => {
             let parsedBody = {};
             try {
@@ -139,7 +139,47 @@ describe('OMDb API test with an API key', () => {
         done();
     })
 
-    it('Should verify there are no duplicate records across the first 5 pages', () => {
+    it.only('Should verify there are no duplicate records across the first 5 pages', (done) => {
+        let allMovies = [];
+        request.get({url: baseUrl + '?s=thomas&page=1' + apiKey}, (err, res, body) => {
+            let parsedBody = JSON.parse(body);
+            allMovies.push(parsedBody.Search)
+            // console.log(allMovies)
+        })
+        request.get({url: baseUrl + '?s=thomas&page=2' + apiKey}, (err, res, body) => {
+            let parsedBody = JSON.parse(body);
+            allMovies.push(parsedBody.Search)
+            console.log(allMovies)
+        })
+
+        if (allMovies.length > 0) {
+            // console.log(allMovies)
+        }
+        // for (let i = 1; i < 6; i++) {
+        //     request.get({url: baseUrl + '?s=thomas&page=' + i + apiKey}, (err, res, body) => {
+        //         let parsedBody = {};
+        //         try {
+        //             parsedBody = JSON.parse(body)
+        //         }
+        //         catch(err) {
+        //             parsedBody = {};
+        //         }
+        //         // console.log(`${i}`, parsedBody.Search)
+                
+        //         allMovies.push(parsedBody.Search)
+
+        //         // input: objects from first 5 pages
+        //         // output: if one of the 
+               
+        //     })
+        // }
+        // console.log(allMovies.length)
+        // expect(allMovies.length)
+        done()
+    })
+
+    it('Should ', () => {
 
     })
+    
 })
